@@ -1,31 +1,33 @@
-package com.example.testrootstack
+package com.example.testrootstack.activities
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import com.example.testrootstack.R
+import com.example.testrootstack.presenters.MainActivityPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
     private lateinit var textMessage: TextView
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                textMessage.setText(R.string.title_home)
+                message.setText(R.string.title_home)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
-                textMessage.setText(R.string.title_explore)
+                message.setText(R.string.title_explore)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
-                textMessage.setText(R.string.title_queues)
+                message.setText(R.string.title_queues)
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.navigation_profile -> {
-                textMessage.setText(R.string.title_profile)
+                message.setText(R.string.title_profile)
                 return@OnNavigationItemSelectedListener true
             }
         }
@@ -37,8 +39,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        textMessage = findViewById(R.id.message)
-
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        val presenter = MainActivityPresenter(this)
+
+        presenter.getPeople(1)
+    }
+
+    override fun populateRecylcer(data: String) {
+        val data2 = "data"
     }
 }
