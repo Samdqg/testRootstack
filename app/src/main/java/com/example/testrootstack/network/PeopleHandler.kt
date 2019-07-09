@@ -3,11 +3,11 @@ package com.example.testrootstack.network
 import com.example.testrootstack.models.PeopleBean
 import retrofit2.Callback
 
-class PeopleHandler {
+class PeopleHandler : RetroBase() {
 
-    val retrofit = RetroBase.retrofit!!.create(PeopleService::class.java)
+    val service = retrofit!!.create(PeopleService::class.java)
 
     fun getPeople(page : Int, callback : Callback<PeopleBean>){
-        retrofit.getPeople(page).enqueue(callback)
+        service.getPeople(page).enqueue(callback)
     }
 }

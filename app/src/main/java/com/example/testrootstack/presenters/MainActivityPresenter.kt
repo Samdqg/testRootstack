@@ -16,7 +16,7 @@ class MainActivityPresenter(val recycler : Recycler) {
             override fun onResponse(call: Call<PeopleBean>, response: Response<PeopleBean>) {
                 if (response.isSuccessful){
                     val data = response.body()
-                    recycler.populateRecylcer("hola")
+                    recycler.populateRecylcer(ArrayList(data!!.results!!))
                 }
             }
 
@@ -27,6 +27,6 @@ class MainActivityPresenter(val recycler : Recycler) {
         })
     }
     interface Recycler{
-        fun populateRecylcer(data: String)
+        fun populateRecylcer(peopleList: ArrayList<PeopleBean.People>)
     }
 }
