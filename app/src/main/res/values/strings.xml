@@ -6,4 +6,5 @@
     <string name="title_profile">Profile</string>
     <string name="litle_name">%s - %d km</string>
     <string name="title_list">Negocios cercanos a ti</string>
+    <string name="hint_edit_text">Lugares cerca de mi</string>
 </resources>

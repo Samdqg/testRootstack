@@ -12,7 +12,8 @@ import com.example.testrootstack.models.PeopleBean
 import com.example.testrootstack.presenters.MainActivityPresenter
 import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.DividerItemDecoration
-
+import android.text.Editable
+import android.text.TextWatcher
 
 class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
         val presenter = MainActivityPresenter(this)
         initRecyclerView()
+        initSearch()
         presenter.getPeople(1)
     }
 
@@ -64,13 +66,25 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
             layoutManager.getOrientation()
         )
         rvPeople.addItemDecoration(mDividerItemDecoration)
+        peopleAdapter = PeopleAdapter(ArrayList(), ArrayList(), this)
+        rvPeople.adapter = peopleAdapter
+    }
 
+    fun initSearch(){
+        editSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                peopleAdapter!!.getFilter().filter(charSequence.toString())
+            }
+
+            override fun afterTextChanged(editable: Editable) {}
+        })
     }
 
     override fun populateRecylcer(peopleList: ArrayList<PeopleBean.People>) {
 
-        peopleAdapter = PeopleAdapter(peopleList, this)
-        rvPeople.adapter = peopleAdapter
+        peopleAdapter!!.setList(peopleList)
+        peopleAdapter!!.notifyDataSetChanged()
 
     }
 }
