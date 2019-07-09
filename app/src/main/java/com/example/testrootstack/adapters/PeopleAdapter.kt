@@ -13,8 +13,8 @@ import com.example.testrootstack.models.PeopleBean
 import kotlinx.android.synthetic.main.people_list_item.view.*
 
 
-class PeopleAdapter(private var items: ArrayList<PeopleBean.People> , private var peopleListFiltered: ArrayList<PeopleBean.People>, val context : Context) : RecyclerView.Adapter<PeopleAdapter.ViewHolder>(),
-    Filterable {
+class PeopleAdapter(private var items: ArrayList<PeopleBean.People> , private var peopleListFiltered: ArrayList<PeopleBean.People>, val context : Context) :
+    RecyclerView.Adapter<PeopleAdapter.ViewHolder>(), Filterable {
 
     //var peopleListFiltered : ArrayList<PeopleBean.People>? = items
 

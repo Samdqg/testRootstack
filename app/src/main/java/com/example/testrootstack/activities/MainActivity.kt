@@ -14,12 +14,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 import android.support.v7.widget.DividerItemDecoration
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
     private lateinit var textMessage: TextView
     private var peopleAdapter: PeopleAdapter? = null
-    private var myPeopleList: ArrayList<PeopleBean.People>? = null
+    private lateinit var myPeopleList: ArrayList<PeopleBean.People>
+    private var page : Int = 1
+    private val context = this
+    lateinit var presenter: MainActivityPresenter
+    private var loading = true
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -51,10 +56,11 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
         navView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
 
-        val presenter = MainActivityPresenter(this)
+        presenter = MainActivityPresenter(this)
+        myPeopleList = ArrayList()
         initRecyclerView()
         initSearch()
-        presenter.getPeople(1)
+        presenter.getPeople(page)
     }
 
     fun initRecyclerView() {
@@ -68,6 +74,39 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
         rvPeople.addItemDecoration(mDividerItemDecoration)
         peopleAdapter = PeopleAdapter(ArrayList(), ArrayList(), this)
         rvPeople.adapter = peopleAdapter
+
+        rvPeople.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                /*if (!recyclerView.canScrollVertically(1)) {
+                    Toast.makeText(context, "Last", Toast.LENGTH_SHORT).show()
+
+                }*/
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+
+                if(loading){
+                    if (dy > 0){
+                        val visibleItemCount = linearLayoutManager.getChildCount();
+                        val totalItemCount = linearLayoutManager.getItemCount();
+                        val pastVisiblesItems = linearLayoutManager.findFirstVisibleItemPosition()
+
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false
+                            page++
+                            presenter.getPeople(page)
+                        }
+
+                    }
+                }
+
+            }
+        })
+
+
     }
 
     fun initSearch(){
@@ -83,8 +122,18 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
     override fun populateRecylcer(peopleList: ArrayList<PeopleBean.People>) {
 
-        peopleAdapter!!.setList(peopleList)
+        loading = true
+        if(myPeopleList != null){
+            myPeopleList.addAll(peopleList)
+        }else{
+            myPeopleList = peopleList
+        }
+        peopleAdapter!!.setList(myPeopleList)
         peopleAdapter!!.notifyDataSetChanged()
 
+    }
+
+    override fun showToast() {
+        Toast.makeText(this, R.string.error_message, Toast.LENGTH_LONG).show()
     }
 }

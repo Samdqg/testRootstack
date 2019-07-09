@@ -17,10 +17,13 @@ class MainActivityPresenter(val recycler : Recycler) {
                 if (response.isSuccessful){
                     val data = response.body()
                     recycler.populateRecylcer(ArrayList(data!!.results!!))
+                }else{
+                    recycler.showToast()
                 }
             }
 
             override fun onFailure(call: Call<PeopleBean>, t: Throwable) {
+                recycler.showToast()
 
             }
 
@@ -28,5 +31,6 @@ class MainActivityPresenter(val recycler : Recycler) {
     }
     interface Recycler{
         fun populateRecylcer(peopleList: ArrayList<PeopleBean.People>)
+        fun showToast()
     }
 }

@@ -11,10 +11,10 @@ class PeopleBean{
         val name: String? = null
 
         @SerializedName("height")
-        val mHeight: Int? = null
+        val mHeight: String? = null
 
         @SerializedName("mass")
-        val mass: Int? = null
+        val mass: String? = null
 
         @SerializedName("hair_color")
         val hair_color: String? = null
