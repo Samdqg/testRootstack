@@ -1,5 +1,6 @@
 package com.example.testrootstack.activities
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +16,9 @@ import android.support.v7.widget.DividerItemDecoration
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import android.graphics.drawable.ColorDrawable
+import android.app.AlertDialog
+import android.graphics.Color
 
 class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
@@ -25,6 +29,7 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
     private val context = this
     lateinit var presenter: MainActivityPresenter
     private var loading = true
+    private var progressDialog: AlertDialog? = null
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -61,6 +66,7 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
         initRecyclerView()
         initSearch()
         presenter.getPeople(page)
+        showLoading()
     }
 
     fun initRecyclerView() {
@@ -97,7 +103,11 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false
                             page++
+                            if(page > 9) {
+                                page= 1
+                            }
                             presenter.getPeople(page)
+                            showLoading()
                         }
 
                     }
@@ -120,6 +130,31 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
         })
     }
 
+    fun showLoading() {
+        if (progressDialog == null || !progressDialog!!.isShowing()) {
+            val dialogBuilder = AlertDialog.Builder(this)
+
+            val inflater = this.layoutInflater
+            val dialogView = inflater.inflate(R.layout.progress_bar, null)
+            dialogBuilder.setView(dialogView)
+            progressDialog = dialogBuilder.create()
+            progressDialog?.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            progressDialog?.setCancelable(false)
+            progressDialog?.setCanceledOnTouchOutside(false)
+            progressDialog?.show()
+        }
+    }
+
+    fun dismissLoading() {
+        if (progressDialog != null && progressDialog!!.isShowing) {
+            try {
+                progressDialog!!.dismiss()
+            } catch (e: Exception) {
+            }
+
+        }
+    }
+
     override fun populateRecylcer(peopleList: ArrayList<PeopleBean.People>) {
 
         loading = true
@@ -135,5 +170,9 @@ class MainActivity : AppCompatActivity() , MainActivityPresenter.Recycler {
 
     override fun showToast() {
         Toast.makeText(this, R.string.error_message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun dismissDialog() {
+        dismissLoading()
     }
 }

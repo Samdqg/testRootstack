@@ -20,10 +20,13 @@ class MainActivityPresenter(val recycler : Recycler) {
                 }else{
                     recycler.showToast()
                 }
+
+                recycler.dismissDialog()
             }
 
             override fun onFailure(call: Call<PeopleBean>, t: Throwable) {
                 recycler.showToast()
+                recycler.dismissDialog()
 
             }
 
@@ -32,5 +35,6 @@ class MainActivityPresenter(val recycler : Recycler) {
     interface Recycler{
         fun populateRecylcer(peopleList: ArrayList<PeopleBean.People>)
         fun showToast()
+        fun dismissDialog()
     }
 }
