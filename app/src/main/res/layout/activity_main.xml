@@ -8,15 +8,33 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <EditText
-        android:id="@+id/editSearch"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:hint="@string/hint_edit_text"/>
+        android:background="@color/background_searchbar"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        app:hintEnabled="false">
+        <EditText
+            android:id="@+id/editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:background="@drawable/background_edittext"
+            android:paddingBottom="8dp"
+            android:drawableRight="@drawable/icons_search_24"
+            android:drawableTint="#b1b1b9"
+            android:paddingTop="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textCursorDrawable="@null"
+            android:hint="@string/hint_edit_text"/>
+    </android.support.design.widget.TextInputLayout>
+
 
     <TextView
         android:id="@+id/message"
@@ -24,9 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:text="@string/title_list"
-        android:layout_below="@+id/editSearch"
+        android:layout_below="@+id/textInputSearch"
         android:fontFamily="@font/montserrat_bold"
         android:textSize="18sp"/>
 
